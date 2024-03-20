@@ -7,6 +7,9 @@ import OAuth from "./components/auth/Oauth";
 import Login from "./screens/Login";
 import Profile from "./screens/Profile";
 import Signup from "./screens/Signup";
+import Upload from "./screens/Upload";
+import SeePost from "./screens/SeePost";
+import PostProgress from "./screens/PostProgress";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +44,21 @@ const router = createBrowserRouter([
       {
         path: "oauth/login/google",
         element: <OAuth />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "upload",
+        element: <Upload />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "posts/:postId",
+        element: <SeePost />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "posts/progress/:postId",
+        element: <PostProgress />,
         errorElement: <NotFound />,
       },
       // {

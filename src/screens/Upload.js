@@ -1,28 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/auth/AuthContext";
 
-function Login() {
+function Upload() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    title: "",
+    content: "",
+    videoUrl: "",
   });
+
+  const { title, content, videoUrl } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/auth/login`,
+        `${process.env.REACT_APP_WEB_SERVER}/posts`,
         {
           method: "POST",
           credentials: "include",
@@ -36,45 +35,54 @@ function Login() {
         throw new Error("Failed to submit form");
       }
       console.log("Form submitted successfully");
-      login();
       navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }
-
     setFormData({
-      email: "",
+      title: "",
+      content: "",
+      videoUrl: "",
     });
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Upload</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email:</label>
+          <label>Title:</label>
           <input
-            type="email"
-            name="email"
-            value={formData.email}
+            type="text"
+            name="title"
+            value={title}
             onChange={handleChange}
             required
           />
         </div>
         <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
+          <label>Content:</label>
+          <textarea
+            name="content"
+            value={content}
             onChange={handleChange}
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <div>
+          <label>URL:</label>
+          <input
+            type="text"
+            name="videoUrl"
+            value={videoUrl}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Upload</button>
       </form>
     </div>
   );
 }
 
-export default Login;
+export default Upload;

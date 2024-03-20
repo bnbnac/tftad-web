@@ -18,33 +18,18 @@ const OAuth = () => {
       )
         .then((response) => {
           if (response.ok) {
-            fetch(`${process.env.REACT_APP_WEB_SERVER}/oauth/add/channel`, {
-              method: "POST",
-              credentials: "include",
-            }).then((response) => {
-              if (response.ok) {
-                navigate("/");
-              } else {
-                console.error(
-                  "Failed to exchange access token:",
-                  response.statusText
-                );
-                navigate("/");
-              }
-            });
-
-            navigate("/");
+            navigate("/profiles");
           } else {
             console.error(
               "Failed to exchange authorization code:",
               response.statusText
             );
-            navigate("/");
+            navigate("/profiles");
           }
         })
         .catch((error) => {
           console.error("Error exchanging authorization code:", error);
-          navigate("/");
+          navigate("/profiles");
         });
     }
   }, [navigate]);

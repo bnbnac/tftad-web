@@ -1,17 +1,22 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "./auth/AuthContext";
 
 function Header() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
 
-  const onClickAuth = () => {
-    if (isLoggedIn) {
-      navigate("/profiles");
-    } else {
-      navigate("/login");
-    }
+  const onClickUpload = () => {
+    navigate("/upload");
+  };
+  const onClickLogin = () => {
+    navigate("/login");
+  };
+  const onClickLogout = () => {
+    logout();
+    navigate("/");
+  };
+  const onClickProfile = () => {
+    navigate("/profiles");
   };
   const onClickHome = () => {
     navigate("/");
@@ -30,7 +35,15 @@ function Header() {
           <button onClick={onClickSignup}>Signup</button>
         </li>
         <li>
-          <button onClick={onClickAuth}>Auth:LOGIN?OR?PROFILE</button>
+          {isLoggedIn ? (
+            <div>
+              <button onClick={onClickProfile}>Profile</button>
+              <button onClick={onClickLogout}>Logout</button>
+              <button onClick={onClickUpload}>Upload</button>
+            </div>
+          ) : (
+            <button onClick={onClickLogin}>Login</button>
+          )}
         </li>
         <li>
           <button onClick={onClickHome}>Home</button>

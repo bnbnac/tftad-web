@@ -22,20 +22,23 @@ function Posts() {
     fetchData();
   }, []);
 
+  // Filter out posts where published is true
+  const filteredPosts = posts.filter((post) => post.published === true);
+
   return (
     <div>
       <h1>Posts</h1>
       <hr />
       <ul>
-        {posts.map((post) => (
-          <div>
-            <li key={post.id}>{post.id}</li>
-            <li key={post.title}>{post.title}</li>
-            <li key={post.content}>{post.content}</li>
-            <li key={post.published}>{post.published}</li>
-            <li key={post.videoUrl}>
-              {post.videoUrl}근데 이건 videoId가 아닌데?
-            </li>
+        {filteredPosts.map((post) => (
+          <div key={post.id}>
+            <a href={`/posts/${post.id}`}>
+              <li>{post.id}</li>
+              <li>{post.title}</li>
+              <li>{post.content}</li>
+              <li>{post.published}</li>
+              <li>{post.videoUrl}</li>
+            </a>
           </div>
         ))}
       </ul>
