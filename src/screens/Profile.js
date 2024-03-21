@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 function Profile() {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ function Profile() {
                     href={
                       post.published
                         ? `/posts/${post.id}`
-                        : `/posts/progress/${post.id}`
+                        : `/posts/${post.id}/progress`
                     }
                   >
                     <li>{post.id}</li>

@@ -1,9 +1,8 @@
-import Posts from "../components/posts/Posts";
+import Posts from "./post/Posts";
 
 function Home() {
   return (
     <div>
-      <h1>Home</h1>
       <Posts />
     </div>
   );

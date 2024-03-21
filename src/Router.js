@@ -3,13 +3,13 @@ import Root from "./Root";
 import Home from "./screens/Home";
 import NotFound from "./screens/NotFound";
 import Subscribes from "./screens/Subscribes";
-import OAuth from "./components/auth/Oauth";
+import OAuth from "./tools/Oauth";
 import Login from "./screens/Login";
 import Profile from "./screens/Profile";
 import Signup from "./screens/Signup";
 import Upload from "./screens/Upload";
-import SeePost from "./screens/SeePost";
-import PostProgress from "./screens/PostProgress";
+import SeePost from "./screens/post/SeePost";
+import PostProgress from "./screens/post/PostProgress";
 
 const router = createBrowserRouter([
   {
@@ -57,20 +57,10 @@ const router = createBrowserRouter([
         errorElement: <NotFound />,
       },
       {
-        path: "posts/progress/:postId",
+        path: "posts/:postId/progress",
         element: <PostProgress />,
         errorElement: <NotFound />,
       },
-      // {
-      //   path: "questions/:questionId",
-      //   element: <Question />,
-      //   children: [
-      //     {
-      //       path: "answer",
-      //       element: <Answer />,
-      //     },
-      //   ],
-      // },
     ],
     errorElement: <NotFound />,
   },
