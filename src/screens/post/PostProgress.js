@@ -53,7 +53,7 @@ function PostProgress() {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_WEB_SERVER}/posts/${postId}`
+          `${process.env.REACT_APP_WEB_SERVER}/posts/simple/${postId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch post");

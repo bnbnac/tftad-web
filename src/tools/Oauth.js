@@ -10,9 +10,9 @@ const OAuth = () => {
 
     if (code) {
       fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/oauth/login/google?code=${code}`,
+        `${process.env.REACT_APP_WEB_SERVER}/channels/direct?code=${code}`,
         {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         }
       )

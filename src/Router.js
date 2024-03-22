@@ -4,14 +4,14 @@ import Home from "./screens/Home";
 import NotFound from "./screens/NotFound";
 import Subscribes from "./screens/Subscribes";
 import OAuth from "./tools/Oauth";
-import Login from "./screens/Login";
-import Profile from "./screens/Profile";
-import Signup from "./screens/Signup";
-import Upload from "./screens/Upload";
+import Login from "./screens/member/Login";
+import Profile from "./screens/member/Profile";
+import Signup from "./screens/member/Signup";
+import Upload from "./screens/post/Upload";
 import SeePost from "./screens/post/SeePost";
 import PostProgress from "./screens/post/PostProgress";
 import EditPost from "./screens/post/EditPost";
-import EditMember from "./screens/EditMember";
+import EditMember from "./screens/member/EditMember";
 
 const router = createBrowserRouter([
   {

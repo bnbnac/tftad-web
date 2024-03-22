@@ -27,7 +27,7 @@ export const FatText = styled.span`
 export const PostContainer = styled.span`
   border: 1px solid darkorchid;
   display: flex;
-  width: 400px;
+  width: 350px;
   margin: 10px;
   padding: 5px;
   background-color: mintcream;
@@ -45,4 +45,29 @@ export const Container = styled.div`
   margin: 10px auto;
   background-color: white;
   border-radius: 30px;
+`;
+
+export const Button = styled.button`
+  width: 60px;
+  background-color: #0f52ba;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  margin: 10px auto;
+  cursor: pointer;
+`;
+
+export const StyledA = styled.a`
+  width: 100px;
+  background-color: #0f52ba;
+  text-decoration: none;
+  font-family: sans-serif;
+  display: block;
+  text-align: center;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 20px auto;
+  cursor: pointer;
 `;

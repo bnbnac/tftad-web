@@ -16,7 +16,8 @@ const PostLink = styled.a`
   text-decoration: none;
   font-weight: bold;
   margin-bottom: 10px;
-  display: block;
+  display: flex;
+  flex-direction: column;
 `;
 
 const PostInfo = styled.span`
@@ -54,14 +55,8 @@ function Posts() {
         {filteredPosts.map((post) => (
           <PostContainer>
             <PostLink href={`/posts/${post.id}`}>
-              <PostInfo style={{ fontSize: "16px" }}>{post.title}</PostInfo>
-              <PostInfo>post.member.name</PostInfo>
-              <PostInfo>
-                member가 아니고 channel이 들어가는게 자연스러움
-              </PostInfo>
-              <PostInfo>viewcount</PostInfo>
-              <PostInfo>정답률</PostInfo>
-              <PostInfo>게시일</PostInfo>
+              <PostInfo style={{ fontSize: "26px" }}>{post.title}</PostInfo>
+              <PostInfo>####viewcount####게시일####</PostInfo>
             </PostLink>
           </PostContainer>
         ))}

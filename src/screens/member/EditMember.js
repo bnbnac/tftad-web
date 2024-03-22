@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -44,6 +44,9 @@ const Button = styled.button`
 
 function EditMember() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { name: memberName, id } = location.state.memberInfo;
+
   const [memberId, setMemberId] = useState("");
   const [formData, setFormData] = useState({
     name: "",
@@ -51,24 +54,10 @@ function EditMember() {
   });
 
   useEffect(() => {
-    const fetchMemberData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_WEB_SERVER}/members/me`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch member data");
-        }
-        const memberData = await response.json();
-        setFormData({
-          name: memberData.name,
-        });
-        setMemberId(memberData.id);
-      } catch (error) {
-        console.error("Error fetching member data:", error);
-      }
-    };
-    fetchMemberData();
+    setFormData({
+      name: memberName,
+    });
+    setMemberId(id);
   }, []);
 
   const { name, password } = formData;
@@ -112,13 +101,7 @@ function EditMember() {
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Name:</Label>
-          <Input
-            type="text"
-            name="name"
-            value={name}
-            onChange={handleChange}
-            required
-          />
+          <Input type="text" name="name" value={name} onChange={handleChange} />
         </FormGroup>
         <FormGroup>
           <Label>Password:</Label>
@@ -127,7 +110,6 @@ function EditMember() {
             name="password"
             value={password}
             onChange={handleChange}
-            required
           />
         </FormGroup>
         <Button type="submit">Save Changes</Button>

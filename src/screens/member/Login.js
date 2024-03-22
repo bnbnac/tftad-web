@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Container, Title } from "../components/shared";
+import { Container, Title } from "../../components/shared";
+import { useAuth } from "../../tools/AuthContext";
 
 const Form = styled.form`
   display: flex;
@@ -28,11 +29,11 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
-    name: "",
     password: "",
   });
 
@@ -48,7 +49,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/auth/signup`,
+        `${process.env.REACT_APP_WEB_SERVER}/auth/login`,
         {
           method: "POST",
           credentials: "include",
@@ -62,15 +63,20 @@ const Signup = () => {
         throw new Error("Failed to submit form");
       }
       console.log("Form submitted successfully");
+      login();
       navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }
+
+    setFormData({
+      email: "",
+    });
   };
 
   return (
     <Container>
-      <Title>Signup</Title>
+      <Title>Login</Title>
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <label>Email:</label>
@@ -78,16 +84,6 @@ const Signup = () => {
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <label>Name:</label>
-          <Input
-            type="text"
-            name="name"
-            value={formData.name}
             onChange={handleChange}
             required
           />
@@ -102,10 +98,10 @@ const Signup = () => {
             required
           />
         </FormGroup>
-        <Button type="submit">Signup</Button>
+        <Button type="submit">Login</Button>
       </Form>
     </Container>
   );
 };
 
-export default Signup;
+export default Login;

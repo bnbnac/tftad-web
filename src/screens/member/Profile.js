@@ -2,34 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
+  Button,
   ButtonContainer,
   Container,
   PostContainer,
+  StyledA,
   Title,
   TitleSmall,
-} from "../components/shared";
-
-const Image = styled.img`
-  height: 60px;
-  border-radius: 50px;
-`;
-
-const Button = styled.button`
-  width: 60px;
-  background-color: #0f52ba;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  margin: 3px;
-  margin-left: 10px;
-  cursor: pointer;
-`;
+} from "../../components/shared";
+import Channel from "../../components/Channel";
 
 const MemberContainer = styled.span`
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
   margin-right: 30px;
+`;
+
+const ChannelContainer = styled.span`
+  border: 1px solid darkorchid;
+  display: flex;
+  width: 300px;
+  border-radius: 5px;
+  background-color: mintcream;
+  justify-content: space-between;
+  margin: 10px;
 `;
 
 const ProfileContainer = styled.span`
@@ -49,15 +46,6 @@ const ChannelsContainer = styled.span`
   flex-wrap: wrap;
   height: 100%;
   width: 100%;
-`;
-
-const ChannelContainer = styled.span`
-  border: 1px solid darkorchid;
-  display: flex;
-  width: 300px;
-  border-radius: 5px;
-  background-color: mintcream;
-  margin: 10px;
 `;
 
 const PostLink = styled.a`
@@ -84,12 +72,6 @@ const MemberInfoContainer = styled.span`
 const MemberInfo = styled.span`
   display: flex;
   margin-bottom: 5px;
-`;
-
-const StyledA = styled.a`
-  display: flex;
-  margin-bottom: 5px;
-  margin-right: 30px;
 `;
 
 function Profile() {
@@ -134,33 +116,18 @@ function Profile() {
       console.error("Error fetching post info:", error);
     }
   };
+
   useEffect(() => {
     fetchMember();
     fetchPost();
   }, []);
 
-  const handleAddChannel = () => {
-    fetch(`${process.env.REACT_APP_WEB_SERVER}/channels`, {
-      method: "POST",
-      credentials: "include",
-    }).then((response) => {
-      if (response.ok) {
-        fetchMember();
-        fetchPost();
-        navigate("/profiles");
-      } else {
-        console.error("Failed to exchange access token:", response.statusText);
-        navigate("/profiles");
-      }
-    });
-  };
-
   const onClickEditPost = (post) => {
     navigate(`/posts/edit/${post.id}`, { state: { post } });
   };
 
-  const onClickEditMember = () => {
-    navigate(`/members/edit`);
+  const onClickEditMember = (memberInfo) => {
+    navigate(`/members/edit`, { state: { memberInfo } });
   };
 
   const onClickDeletePost = async (postId) => {
@@ -174,6 +141,7 @@ function Profile() {
       if (!response.ok) {
         throw new Error("Failed to delete post");
       }
+      fetchPost();
       navigate("/profiles");
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -191,6 +159,7 @@ function Profile() {
       if (!response.ok) {
         throw new Error("Failed to delete post");
       }
+      fetchMember();
       navigate("/profiles");
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -215,33 +184,22 @@ function Profile() {
                 Email: {memberInfo.email}
               </MemberInfo>
             </MemberContainer>
-            <Button style={{ width: "100px" }} onClick={onClickEditMember}>
+            <Button
+              style={{ width: "100px" }}
+              onClick={() => onClickEditMember(memberInfo)}
+            >
               Edit Member
             </Button>
           </MemberInfoContainer>
         )}
-        <StyledA href={process.env.REACT_APP_GOOGLE_OAUTH}>
-          Google Login
-        </StyledA>
-        <Button style={{ width: "100px" }} onClick={handleAddChannel}>
-          -- CONFIRM Add Channel
-        </Button>
+        <StyledA href={process.env.REACT_APP_GOOGLE_OAUTH}>Add Channel</StyledA>
       </ProfileContainer>
       <TitleSmall>Channels</TitleSmall>
       <ChannelsContainer>
         {memberInfo.channels &&
-          memberInfo.channels.map((channel, index) => (
+          memberInfo.channels.map((channel) => (
             <ChannelContainer>
-              <StyledA
-                href={`https://www.youtube.com/channel/${channel.youtubeChannelId}`}
-              >
-                <MemberInfo style={{ margin: "10px" }}>
-                  <Image src={`${channel.thumbnail}`} />
-                </MemberInfo>
-                <MemberInfo style={{ margin: "10px" }}>
-                  {channel.title}
-                </MemberInfo>
-              </StyledA>
+              <Channel key={channel.id} channel={channel} />
               <Button onClick={() => onClickDeleteChannel(channel.id)}>
                 delete
               </Button>

@@ -69,7 +69,7 @@ function SeePost() {
     <Container>
       <Title>SeePost</Title>
       <PostInfo>
-        <Title>{post.title} </Title>
+        <Title>{post.post.title} </Title>
         <ColumnCover>
           <Line>
             <a
@@ -79,14 +79,14 @@ function SeePost() {
             </a>
           </Line>
           <Line>
-            <a href={`${post.videoUrl}`}>풀영상 바로가기</a>
+            <a href={`${post.post.videoUrl}`}>풀영상 바로가기</a>
           </Line>
         </ColumnCover>
         <ColumnCover>
           <Line>viewcount</Line>
           <Line>createdAt</Line>
         </ColumnCover>
-        <Line>content: {post.content}</Line>
+        <Line>content: {post.post.content}</Line>
       </PostInfo>
 
       <QuestionsContainer>

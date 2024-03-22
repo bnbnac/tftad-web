@@ -12,8 +12,8 @@ const TextArea = styled.textarea``;
 const Button = styled.button``;
 
 function EditPost() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { post } = location.state;
 
   const [formData, setFormData] = React.useState({
@@ -59,13 +59,11 @@ function EditPost() {
           name="title"
           value={formData.title}
           onChange={handleChange}
-          required
         />
         <TextArea
           name="content"
           value={formData.content}
           onChange={handleChange}
-          required
         />
         <Button type="submit">Submit</Button>
       </Form>

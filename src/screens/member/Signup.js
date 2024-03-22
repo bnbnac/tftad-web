@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Container } from "../components/shared";
-
-const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
-`;
+import { Container, Title } from "../../components/shared";
 
 const Form = styled.form`
   display: flex;
@@ -17,18 +12,7 @@ const FormGroup = styled.div`
   margin-bottom: 20px;
 `;
 
-const Label = styled.label`
-  font-weight: bold;
-`;
-
 const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const TextArea = styled.textarea`
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -44,27 +28,27 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-function Upload() {
+const Signup = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    videoUrl: "",
+    email: "",
+    name: "",
+    password: "",
   });
-
-  const { title, content, videoUrl } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/posts`,
+        `${process.env.REACT_APP_WEB_SERVER}/auth/signup`,
         {
           method: "POST",
           credentials: "include",
@@ -82,50 +66,46 @@ function Upload() {
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }
-    setFormData({
-      title: "",
-      content: "",
-      videoUrl: "",
-    });
   };
 
   return (
     <Container>
-      <Title>Upload</Title>
+      <Title>Signup</Title>
       <Form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label>Title:</Label>
+          <label>Email:</label>
           <Input
-            type="text"
-            name="title"
-            value={title}
+            type="email"
+            name="email"
+            value={formData.email}
             onChange={handleChange}
             required
           />
         </FormGroup>
         <FormGroup>
-          <Label>Content:</Label>
-          <TextArea
-            name="content"
-            value={content}
+          <label>Name:</label>
+          <Input
+            type="text"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             required
           />
         </FormGroup>
         <FormGroup>
-          <Label>URL:</Label>
+          <label>Password:</label>
           <Input
-            type="text"
-            name="videoUrl"
-            value={videoUrl}
+            type="password"
+            name="password"
+            value={formData.password}
             onChange={handleChange}
             required
           />
         </FormGroup>
-        <Button type="submit">Upload</Button>
+        <Button type="submit">Signup</Button>
       </Form>
     </Container>
   );
-}
+};
 
-export default Upload;
+export default Signup;
