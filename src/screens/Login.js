@@ -1,8 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Container, Title } from "../components/shared";
 import { useAuth } from "../tools/AuthContext";
 
-function Login() {
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: #0f52ba;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
@@ -48,33 +75,33 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <Container>
+      <Title>Login</Title>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
           <label>Email:</label>
-          <input
+          <Input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
+        </FormGroup>
+        <FormGroup>
           <label>Password:</label>
-          <input
+          <Input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
           />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+        </FormGroup>
+        <Button type="submit">Login</Button>
+      </Form>
+    </Container>
   );
-}
+};
 
 export default Login;

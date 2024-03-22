@@ -1,35 +1,44 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Title } from "../../components/shared";
+import { Container, Title, TitleSmall } from "../../components/shared";
+
+const QuestionsContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+`;
+
+const QuestionContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+`;
+
+const PostInfo = styled.span`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+`;
+
+const Video = styled.video`
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+`;
+
+const Line = styled.span`
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+`;
+
+const ColumnCover = styled.span`
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+`;
 
 function SeePost() {
-  const SeePostContainer = styled.span`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const QuestionsContainer = styled.span`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const QuestionContainer = styled.span`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const PostInfo = styled.span`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const Video = styled.video`
-    width: 100%;
-    max-width: 1200px;
-    height: auto;
-  `;
-
   const { postId } = useParams();
   const [post, setPost] = useState(null);
 
@@ -57,29 +66,45 @@ function SeePost() {
   }
 
   return (
-    <SeePostContainer>
+    <Container>
       <Title>SeePost</Title>
       <PostInfo>
-        Here will be Post info. author, viewcount, videolink: {post.videoUrl},
-        channelLink, ptitle: {post.title}, pcontent: {post.content}
+        <Title>{post.title} </Title>
+        <ColumnCover>
+          <Line>
+            <a
+              href={`https://www.youtube.com/channel/${post.channel.youtubeChannelId}`}
+            >
+              author
+            </a>
+          </Line>
+          <Line>
+            <a href={`${post.videoUrl}`}>풀영상 바로가기</a>
+          </Line>
+        </ColumnCover>
+        <ColumnCover>
+          <Line>viewcount</Line>
+          <Line>createdAt</Line>
+        </ColumnCover>
+        <Line>content: {post.content}</Line>
       </PostInfo>
 
       <QuestionsContainer>
         {post.questions &&
-          post.questions.map((question) => (
+          post.questions.map((question, i) => (
             <QuestionContainer>
+              <TitleSmall>question {i + 1}</TitleSmall>
               <Video
                 id="player"
                 controls
                 src={`${process.env.REACT_APP_STORAGE_SERVER}/questions/${question.filename}`}
                 type="video/mp4"
               ></Video>
-              <Link to={`answer/${question.id}`}>see answer</Link>
-              <Outlet context={{ authorIntention: question.authorIntention }} />
+              <Line>author intention: {question.authorIntention}</Line>
             </QuestionContainer>
           ))}
       </QuestionsContainer>
-    </SeePostContainer>
+    </Container>
   );
 }
 

@@ -1,54 +1,49 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Title } from "../../components/shared";
+import { Container, Title } from "../../components/shared";
+
+const PostContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+  margin-bottom: 15px;
+`;
+
+const ProgressContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  color: #0f52ba;
+  font-weight: 600;
+`;
+
+const Explanation = styled.span`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+`;
+
+const PostInfo = styled.span`
+  display: flex;
+  margin-bottom: 5px;
+`;
+
+const ProgressInfo = styled.span`
+  display: flex;
+  align-content: space-between;
+  width: 100%;
+  margin-bottom: 5px;
+`;
+
+const Line = styled.span`
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+`;
 
 function PostProgress() {
-  const PostProgressContainer = styled.span`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const PostContainer = styled.span`
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    width: 100%;
-    margin-bottom: 15px;
-  `;
-
-  const ProgressContainer = styled.span`
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    color: #0f52ba;
-    font-weight: 600;
-  `;
-
-  const Explanation = styled.span`
-    display: flex;
-    flex-direction: column;
-    margin-top: 30px;
-  `;
-
-  const PostInfo = styled.span`
-    display: flex;
-    margin-bottom: 5px;
-  `;
-
-  const ProgressInfo = styled.span`
-    display: flex;
-    align-content: space-between;
-    width: 100%;
-    margin-bottom: 5px;
-  `;
-
-  const Line = styled.span`
-    display: flex;
-    width: 100%;
-    margin-bottom: 5px;
-  `;
-
   const { postId } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
@@ -93,7 +88,7 @@ function PostProgress() {
   }, [postId]);
 
   return (
-    <PostProgressContainer>
+    <Container>
       <Title>Post Progress</Title>
       {post && (
         <PostContainer>
@@ -110,13 +105,13 @@ function PostProgress() {
           <ProgressInfo>
             <Line>현재대기열/최초대기열</Line>
             <Line>
-              {position.position.current}/{position.position.initial}
+              {position.curPosition}/{position.initialPosition}
             </Line>
           </ProgressInfo>
           <ProgressInfo>
             <Line>현재프레임/총프레임 </Line>
             <Line>
-              {position.cur_frame}/{position.total_frame}
+              {position.curFrame}/{position.totalFrame}
             </Line>
           </ProgressInfo>
         </ProgressContainer>
@@ -128,7 +123,7 @@ function PostProgress() {
         <Line>
           상태: 작업 진행 상태를 표시합니다. waiting - downloading - analysis -
           cutting - sync - response 순으로 진행되며 analysis에 긴 시간이
-          소모됩니다.
+          소요됩니다.
         </Line>
       </Explanation>
       <Explanation>
@@ -144,7 +139,7 @@ function PostProgress() {
           영상의 총 프레임과 현재 분석중인 프레임을 표시합니다.
         </Line>
       </Explanation>
-    </PostProgressContainer>
+    </Container>
   );
 }
 

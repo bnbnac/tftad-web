@@ -15,6 +15,7 @@ const Button = styled.span`
   margin: 0px 3px;
   color: white;
   font-weight: 520;
+  cursor: pointer;
 `;
 
 const ButtonsContainer = styled.span`
@@ -60,9 +61,9 @@ function Header() {
       <Logo>Logo will be here</Logo>
       <ButtonsContainer>
         <Button onClick={onClickHome}>Home</Button>
-        <Button onClick={onClickSubscribes}>Subscribes</Button>
         {isLoggedIn ? (
           <ButtonsContainer>
+            <Button onClick={onClickSubscribes}>Subscribes</Button>
             <Button onClick={onClickProfile}>Profile</Button>
             <Button onClick={onClickLogout}>Logout</Button>
             <Button onClick={onClickUpload}>Upload</Button>

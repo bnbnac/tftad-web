@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Container } from "../components/shared";
+
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+`;
 
 const Title = styled.h1`
   font-size: 24px;
@@ -28,13 +33,6 @@ const Input = styled.input`
   border-radius: 4px;
 `;
 
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
 const Button = styled.button`
   padding: 10px 20px;
   background-color: #0f52ba;
@@ -44,16 +42,36 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-function Upload() {
+function EditMember() {
   const navigate = useNavigate();
-
+  const [memberId, setMemberId] = useState("");
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    videoUrl: "",
+    name: "",
+    password: "",
   });
 
-  const { title, content, videoUrl } = formData;
+  useEffect(() => {
+    const fetchMemberData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_WEB_SERVER}/members/me`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch member data");
+        }
+        const memberData = await response.json();
+        setFormData({
+          name: memberData.name,
+        });
+        setMemberId(memberData.id);
+      } catch (error) {
+        console.error("Error fetching member data:", error);
+      }
+    };
+    fetchMemberData();
+  }, []);
+
+  const { name, password } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,9 +82,9 @@ function Upload() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/posts`,
+        `${process.env.REACT_APP_WEB_SERVER}/members/${memberId}`,
         {
-          method: "POST",
+          method: "PATCH",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -75,57 +93,47 @@ function Upload() {
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to submit form");
+        throw new Error("Failed to update post");
       }
-      console.log("Form submitted successfully");
-      navigate("/");
+      console.log("Member updated successfully");
+      navigate("/profiles");
     } catch (error) {
-      console.error("Error submitting form:", error.message);
+      console.error("Error updating post:", error.message);
     }
-    setFormData({
-      title: "",
-      content: "",
-      videoUrl: "",
-    });
   };
+
+  if (!formData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container>
-      <Title>Upload</Title>
+      <Title>Edit Member</Title>
       <Form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label>Title:</Label>
+          <Label>Name:</Label>
           <Input
             type="text"
-            name="title"
-            value={title}
+            name="name"
+            value={name}
             onChange={handleChange}
             required
           />
         </FormGroup>
         <FormGroup>
-          <Label>Content:</Label>
-          <TextArea
-            name="content"
-            value={content}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>URL:</Label>
+          <Label>Password:</Label>
           <Input
-            type="text"
-            name="videoUrl"
-            value={videoUrl}
+            type="password"
+            name="password"
+            value={password}
             onChange={handleChange}
             required
           />
         </FormGroup>
-        <Button type="submit">Upload</Button>
+        <Button type="submit">Save Changes</Button>
       </Form>
     </Container>
   );
 }
 
-export default Upload;
+export default EditMember;

@@ -10,6 +10,8 @@ import Signup from "./screens/Signup";
 import Upload from "./screens/Upload";
 import SeePost from "./screens/post/SeePost";
 import PostProgress from "./screens/post/PostProgress";
+import EditPost from "./screens/post/EditPost";
+import EditMember from "./screens/EditMember";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +61,16 @@ const router = createBrowserRouter([
       {
         path: "posts/:postId/progress",
         element: <PostProgress />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "posts/edit/:postId",
+        element: <EditPost />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "members/edit",
+        element: <EditMember />,
         errorElement: <NotFound />,
       },
     ],
