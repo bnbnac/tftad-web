@@ -1,64 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
-const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Label = styled.label`
-  font-weight: bold;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #0f52ba;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-`;
+import {
+  ButtonFormal,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Title,
+} from "../../components/shared";
 
 function EditMember() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { name: memberName, id } = location.state.memberInfo;
+  const { name: memberName, id: memberId } = location.state.memberInfo;
 
-  const [memberId, setMemberId] = useState("");
   const [formData, setFormData] = useState({
-    name: "",
+    name: memberName,
     password: "",
   });
-
-  useEffect(() => {
-    setFormData({
-      name: memberName,
-    });
-    setMemberId(id);
-  }, []);
 
   const { name, password } = formData;
 
@@ -112,7 +72,7 @@ function EditMember() {
             onChange={handleChange}
           />
         </FormGroup>
-        <Button type="submit">Save Changes</Button>
+        <ButtonFormal type="submit">Save Changes</ButtonFormal>
       </Form>
     </Container>
   );

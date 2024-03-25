@@ -87,13 +87,17 @@ function PostProgress() {
     fetchPost();
   }, [postId]);
 
+  if (!(position && position)) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Container>
       <Title>Post Progress</Title>
       {post && (
         <PostContainer>
           <PostInfo>제목: {post.title}</PostInfo>
-          <PostInfo>게시일: 어쩌고저쩌고</PostInfo>
+          <PostInfo>게시일: {post.createdAt}</PostInfo>
         </PostContainer>
       )}
       {position && (

@@ -12,6 +12,10 @@ const Info = styled.span`
 `;
 
 const Channel = ({ channel }) => {
+  if (!channel) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <StyledA
       href={`https://www.youtube.com/channel/${channel.youtubeChannelId}`}

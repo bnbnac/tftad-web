@@ -68,6 +68,43 @@ export const StyledA = styled.a`
   border: none;
   border-radius: 5px;
   padding: 10px;
-  margin: 20px auto;
+  margin: 10px auto;
   cursor: pointer;
+  align-items: center;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Label = styled.label`
+  font-weight: bold;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const TextArea = styled.textarea`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const ButtonFormal = styled.button`
+  padding: 10px 20px;
+  background-color: #0f52ba;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+export const FormGroup = styled.div`
+  margin-bottom: 20px;
 `;

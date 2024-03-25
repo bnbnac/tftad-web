@@ -1,48 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { Container } from "../../components/shared";
-
-const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Label = styled.label`
-  font-weight: bold;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #0f52ba;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-`;
+import {
+  ButtonFormal,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  TextArea,
+  Title,
+} from "../../components/shared";
 
 function Upload() {
   const navigate = useNavigate();
@@ -122,7 +89,7 @@ function Upload() {
             required
           />
         </FormGroup>
-        <Button type="submit">Upload</Button>
+        <ButtonFormal type="submit">Upload</ButtonFormal>
       </Form>
     </Container>
   );

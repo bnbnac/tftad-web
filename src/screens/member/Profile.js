@@ -11,6 +11,7 @@ import {
   TitleSmall,
 } from "../../components/shared";
 import Channel from "../../components/Channel";
+import { timeAgo } from "../../tools/Util";
 
 const MemberContainer = styled.span`
   display: flex;
@@ -101,7 +102,7 @@ function Profile() {
   const fetchPost = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/posts`,
+        `${process.env.REACT_APP_WEB_SERVER}/posts/my`,
         {
           method: "GET",
           credentials: "include",
@@ -166,7 +167,7 @@ function Profile() {
     }
   };
 
-  if (!(memberInfo && postInfo)) {
+  if (!memberInfo) {
     return <div>Loading...</div>;
   }
 
@@ -192,7 +193,11 @@ function Profile() {
             </Button>
           </MemberInfoContainer>
         )}
-        <StyledA href={process.env.REACT_APP_GOOGLE_OAUTH}>Add Channel</StyledA>
+        <MemberInfoContainer>
+          <StyledA href={process.env.REACT_APP_GOOGLE_OAUTH}>
+            Add Channel
+          </StyledA>
+        </MemberInfoContainer>
       </ProfileContainer>
       <TitleSmall>Channels</TitleSmall>
       <ChannelsContainer>
@@ -218,8 +223,10 @@ function Profile() {
                     : `/posts/${post.id}/progress`
                 }
               >
-                <PostInfo style={{ fontSize: "16px" }}>{post.title}</PostInfo>
-                <PostInfo>게시일</PostInfo>
+                <PostInfo style={{ fontSize: "26px" }}>{post.title}</PostInfo>
+                <PostInfo>
+                  uploaded: {timeAgo(new Date(post.createdAt))}
+                </PostInfo>
               </PostLink>
               <ButtonContainer>
                 <Button onClick={() => onClickEditPost(post)}>edit</Button>

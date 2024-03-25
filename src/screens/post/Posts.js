@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Container, PostContainer, Title } from "../../components/shared";
 import { Outlet } from "react-router-dom";
+import { timeAgo } from "../../tools/Util";
 
 const PostsContainer = styled.span`
   display: flex;
@@ -56,7 +57,7 @@ function Posts() {
           <PostContainer>
             <PostLink href={`/posts/${post.id}`}>
               <PostInfo style={{ fontSize: "26px" }}>{post.title}</PostInfo>
-              <PostInfo>####viewcount####게시일####</PostInfo>
+              <PostInfo>uploaded: {timeAgo(new Date(post.createdAt))}</PostInfo>
             </PostLink>
           </PostContainer>
         ))}

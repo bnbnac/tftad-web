@@ -1,29 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  TextArea,
+  ButtonFormal,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Title,
+} from "../../components/shared";
+import Question from "../../components/Question";
 import styled from "styled-components";
-import { Container, Title } from "../../components/shared";
 
-const Form = styled.form``;
+const QuestionsContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+`;
 
-const Input = styled.input``;
-
-const TextArea = styled.textarea``;
-
-const Button = styled.button``;
+const Block = styled.span`
+  display: block;
+`;
 
 function EditPost() {
   const navigate = useNavigate();
   const location = useLocation();
   const { post } = location.state;
 
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     title: post.title,
     content: post.content,
+    questionEdits: [],
   });
+  const [questions, setQuestions] = useState(null);
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_WEB_SERVER}/posts/${post.id}/questions`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const questions = await response.json();
+        setQuestions(questions);
+
+        const questionEdits = questions.map((question) => ({
+          questionId: question.id,
+          authorIntention: question.authorIntention || "",
+        }));
+        setFormData({ ...formData, questionEdits });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChange = (e, index) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const updatedQuestionEdits = [...formData.questionEdits];
+    updatedQuestionEdits[index] = {
+      ...updatedQuestionEdits[index],
+      authorIntention: value,
+    };
+    setFormData({ ...formData, questionEdits: updatedQuestionEdits });
   };
 
   const handleSubmit = async (e) => {
@@ -50,22 +93,55 @@ function EditPost() {
     }
   };
 
+  if (!questions) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Container>
       <Title>Edit Post</Title>
       <Form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-        />
-        <TextArea
-          name="content"
-          value={formData.content}
-          onChange={handleChange}
-        />
-        <Button type="submit">Submit</Button>
+        <FormGroup>
+          <Label>Title:</Label>
+          <Input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Content:</Label>
+          <TextArea
+            name="content"
+            value={formData.content}
+            onChange={(e) =>
+              setFormData({ ...formData, content: e.target.value })
+            }
+          />
+        </FormGroup>
+
+        <QuestionsContainer>
+          {questions &&
+            questions.map((question, i) => (
+              <Block key={i}>
+                <Question question={question} i={i} />
+                <FormGroup>
+                  <Label>authorIntention:</Label>
+                  <Input
+                    type="text"
+                    name={`authorIntention${i}`}
+                    value={formData.questionEdits[i].authorIntention}
+                    onChange={(e) => handleChange(e, i)}
+                  />
+                </FormGroup>
+              </Block>
+            ))}
+        </QuestionsContainer>
+
+        <ButtonFormal type="submit">Submit</ButtonFormal>
       </Form>
     </Container>
   );

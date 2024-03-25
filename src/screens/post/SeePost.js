@@ -1,29 +1,34 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Container, Title, TitleSmall } from "../../components/shared";
+import {
+  Button,
+  Container,
+  StyledA,
+  Title,
+  TitleSmall,
+} from "../../components/shared";
+import Channel from "../../components/Channel";
+import { timeAgo } from "../../tools/Util";
+import Question from "../../components/Question";
 
 const QuestionsContainer = styled.span`
   display: flex;
   flex-direction: column;
 `;
 
-const QuestionContainer = styled.span`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 5px;
+const Block = styled.span`
+  display: block;
 `;
 
 const PostInfo = styled.span`
   display: flex;
   flex-direction: column;
+  max-width: 600px;
   margin-bottom: 10px;
-`;
-
-const Video = styled.video`
-  width: 100%;
-  max-width: 1200px;
-  height: auto;
+  border-radius: 5px;
+  border: 1px solid darkorchid;
+  padding: 20px;
 `;
 
 const Line = styled.span`
@@ -36,11 +41,30 @@ const ColumnCover = styled.span`
   display: flex;
   width: 100%;
   margin-bottom: 5px;
+  align-items: center;
+`;
+
+const RowCover = styled.span`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 5px;
+  margin-left: 10px;
 `;
 
 function SeePost() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
+  const [questions, setQuestions] = useState(null);
+  const [channel, setChannel] = useState(null);
+  const [showAuthorIntention, setShowAuthorIntention] = useState(false);
+
+  const toggleAuthorIntention = (index) => {
+    setShowAuthorIntention((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +76,15 @@ function SeePost() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setPost(data);
+        setPost(data.post);
+        setQuestions(data.questions);
+        setChannel(data.channel);
+
+        const initialState = {};
+        data.questions.forEach((question, index) => {
+          initialState[index] = false;
+        });
+        setShowAuthorIntention(initialState);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -61,47 +93,47 @@ function SeePost() {
     fetchData();
   }, [postId]);
 
-  if (!post) {
+  if (!(post && questions && channel)) {
     return <div>Loading...</div>;
   }
 
   return (
     <Container>
-      <Title>SeePost</Title>
+      <Title style={{ fontSize: "26px" }}>{post.title}</Title>
       <PostInfo>
-        <Title>{post.post.title} </Title>
         <ColumnCover>
+          <Channel channel={channel} />
+          <RowCover>
+            <Line>uploaded: {timeAgo(new Date(post.createdAt))}</Line>
+          </RowCover>
           <Line>
-            <a
-              href={`https://www.youtube.com/channel/${post.channel.youtubeChannelId}`}
-            >
-              author
-            </a>
-          </Line>
-          <Line>
-            <a href={`${post.post.videoUrl}`}>풀영상 바로가기</a>
+            <StyledA style={{ width: "120px" }} href={`${post.videoUrl}`}>
+              Full Video
+            </StyledA>
           </Line>
         </ColumnCover>
-        <ColumnCover>
-          <Line>viewcount</Line>
-          <Line>createdAt</Line>
-        </ColumnCover>
-        <Line>content: {post.post.content}</Line>
+        <Line style={{ fontSize: "18px", fontFamily: "sans-serif" }}>
+          content: {post.content}
+        </Line>
       </PostInfo>
 
       <QuestionsContainer>
-        {post.questions &&
-          post.questions.map((question, i) => (
-            <QuestionContainer>
-              <TitleSmall>question {i + 1}</TitleSmall>
-              <Video
-                id="player"
-                controls
-                src={`${process.env.REACT_APP_STORAGE_SERVER}/questions/${question.filename}`}
-                type="video/mp4"
-              ></Video>
-              <Line>author intention: {question.authorIntention}</Line>
-            </QuestionContainer>
+        {questions &&
+          questions.map((question, i) => (
+            <Block>
+              <Question question={question} i={i} />
+              <Button
+                onClick={() => toggleAuthorIntention(i)}
+                style={{ width: "150px" }}
+              >
+                {showAuthorIntention[i] ? "Hide" : "Show"} author intention
+              </Button>
+              {showAuthorIntention[i] ? (
+                <Block>Author intention: {question.authorIntention}</Block>
+              ) : (
+                <Block> </Block>
+              )}
+            </Block>
           ))}
       </QuestionsContainer>
     </Container>
