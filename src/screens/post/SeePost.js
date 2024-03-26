@@ -72,10 +72,11 @@ function SeePost() {
         const response = await fetch(
           `${process.env.REACT_APP_WEB_SERVER}/posts/${postId}`
         );
+        const data = await response.json();
         if (!response.ok) {
+          console.log(data);
           throw new Error("Failed to fetch data");
         }
-        const data = await response.json();
         setPost(data.post);
         setQuestions(data.questions);
         setChannel(data.channel);

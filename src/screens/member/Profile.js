@@ -89,10 +89,11 @@ function Profile() {
           credentials: "include",
         }
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch member info");
-      }
       const data = await response.json();
+      if (!response.ok) {
+        console.log(data);
+        throw new Error("Failed to fetch");
+      }
       setMemberInfo(data);
     } catch (error) {
       console.error("Error fetching member info:", error);
@@ -108,10 +109,10 @@ function Profile() {
           credentials: "include",
         }
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch post info");
-      }
       const data = await response.json();
+      if (!response.ok) {
+        console.log(data);
+      }
       setPostInfo(data);
     } catch (error) {
       console.error("Error fetching post info:", error);
@@ -140,6 +141,8 @@ function Profile() {
         }
       );
       if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
         throw new Error("Failed to delete post");
       }
       fetchPost();
@@ -158,6 +161,8 @@ function Profile() {
         }
       );
       if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
         throw new Error("Failed to delete post");
       }
       fetchMember();

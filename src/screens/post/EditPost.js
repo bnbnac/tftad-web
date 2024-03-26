@@ -40,10 +40,11 @@ function EditPost() {
         const response = await fetch(
           `${process.env.REACT_APP_WEB_SERVER}/posts/${post.id}/questions`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
         const questions = await response.json();
+        if (!response.ok) {
+          console.log(questions);
+          throw new Error("Failed to fetch");
+        }
         setQuestions(questions);
 
         const questionEdits = questions.map((question) => ({
@@ -84,6 +85,8 @@ function EditPost() {
         }
       );
       if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
         throw new Error("Failed to update post");
       }
       console.log("Post updated successfully");

@@ -55,10 +55,11 @@ function PostProgress() {
         const response = await fetch(
           `${process.env.REACT_APP_WEB_SERVER}/posts/simple/${postId}`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch post");
-        }
         const post = await response.json();
+        if (!response.ok) {
+          console.log(post);
+          throw new Error("Failed to fetch");
+        }
         setPost(post);
       } catch (error) {
         console.error("Error fetching post:", error);
@@ -70,10 +71,11 @@ function PostProgress() {
         const response = await fetch(
           `${process.env.REACT_APP_WEB_SERVER}/extractor/position/${postId}`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch position");
-        }
         const position = await response.json();
+        if (!response.ok) {
+          console.log(position);
+          throw new Error("Failed to fetch");
+        }
         if (position.published) {
           navigate(`/posts/${postId}`);
         }

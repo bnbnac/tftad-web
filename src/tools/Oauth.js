@@ -5,36 +5,34 @@ const OAuth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-
-    if (code) {
-      fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/channels/direct?code=${code}`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      )
-        .then((response) => {
-          if (response.ok) {
+    const fetchData = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("code");
+      if (code) {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_WEB_SERVER}/channels/direct?code=${code}`,
+            {
+              method: "POST",
+              credentials: "include",
+            }
+          );
+          if (!response.ok) {
+            const responseBody = await response.json();
+            console.log(responseBody);
             navigate("/profiles");
           } else {
-            console.error(
-              "Failed to exchange authorization code:",
-              response.statusText
-            );
             navigate("/profiles");
           }
-        })
-        .catch((error) => {
-          console.error("Error exchanging authorization code:", error);
-          navigate("/profiles");
-        });
-    }
-  }, [navigate]);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
 
-  return <div>Loading...</div>;
+    fetchData();
+    return <div>Loading...</div>;
+  });
 };
 
 export default OAuth;

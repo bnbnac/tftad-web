@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../tools/AuthContext";
 import styled from "styled-components";
+import logoImage from "../assets/long_white_logo_small.png";
 
 const HeaderContainer = styled.header`
   align-items: center;
@@ -26,7 +27,12 @@ const ButtonsContainer = styled.span`
 const Logo = styled.span`
   align-items: center;
   display: flex;
-  font-size: 40px;
+`;
+
+const LogoImage = styled.img`
+  width: 300px;
+  height: auto;
+  margin: 30px;
 `;
 
 function Header() {
@@ -58,7 +64,9 @@ function Header() {
 
   return (
     <HeaderContainer>
-      <Logo>Logo will be here</Logo>
+      <Logo>
+        <LogoImage src={logoImage} alt="Logo" />
+      </Logo>
       <ButtonsContainer>
         <Button onClick={onClickHome}>Home</Button>
         {isLoggedIn ? (

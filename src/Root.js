@@ -7,6 +7,7 @@ function Root() {
       style={{
         backgroundColor: "aqua",
         minHeight: "100vh",
+        fontFamily: "sans-serif",
       }}
     >
       <Header />

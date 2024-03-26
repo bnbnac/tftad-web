@@ -42,6 +42,8 @@ function EditMember() {
         }
       );
       if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
         throw new Error("Failed to update post");
       }
       console.log("Member updated successfully");

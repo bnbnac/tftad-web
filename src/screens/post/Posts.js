@@ -34,10 +34,10 @@ function Posts() {
         const response = await fetch(
           `${process.env.REACT_APP_WEB_SERVER}/posts`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
         const data = await response.json();
+        if (!response.ok) {
+          console.log(data);
+        }
         setPosts(data);
       } catch (error) {
         console.error("Error fetching data:", error);

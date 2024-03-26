@@ -40,6 +40,8 @@ const Signup = () => {
         }
       );
       if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
         throw new Error("Failed to submit form");
       }
       console.log("Form submitted successfully");
