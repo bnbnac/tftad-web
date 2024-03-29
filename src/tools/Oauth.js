@@ -29,9 +29,7 @@ const OAuth = () => {
         }
       }
     };
-
     fetchData();
-    return <div>Loading...</div>;
   });
 };
 

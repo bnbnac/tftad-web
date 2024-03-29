@@ -37,6 +37,7 @@ function Posts() {
         const data = await response.json();
         if (!response.ok) {
           console.log(data);
+          throw new Error("Failed to fetch");
         }
         setPosts(data);
       } catch (error) {
