@@ -128,8 +128,8 @@ function Profile() {
     navigate(`/posts/edit/${post.id}`, { state: { post } });
   };
 
-  const onClickEditMember = (memberInfo) => {
-    navigate(`/members/edit`, { state: { memberInfo } });
+  const onClickEditMember = (member) => {
+    navigate(`/members/edit`, { state: { member } });
   };
 
   const onClickDeletePost = async (postId) => {
@@ -184,15 +184,15 @@ function Profile() {
           <MemberInfoContainer>
             <MemberContainer>
               <MemberInfo style={{ fontSize: "16px" }}>
-                Name: {memberInfo.name}
+                Name: {memberInfo.member.name}
               </MemberInfo>
               <MemberInfo style={{ fontSize: "16px" }}>
-                Email: {memberInfo.email}
+                Email: {memberInfo.member.email}
               </MemberInfo>
             </MemberContainer>
             <Button
               style={{ width: "100px" }}
-              onClick={() => onClickEditMember(memberInfo)}
+              onClick={() => onClickEditMember(memberInfo.member)}
             >
               Edit Member
             </Button>

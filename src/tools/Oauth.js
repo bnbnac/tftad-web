@@ -11,7 +11,7 @@ const OAuth = () => {
       if (code) {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_WEB_SERVER}/channels/direct?code=${code}`,
+            `${process.env.REACT_APP_WEB_SERVER}/channels?code=${code}`,
             {
               method: "POST",
               credentials: "include",

@@ -13,7 +13,7 @@ import {
 function EditMember() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { name: memberName, id: memberId } = location.state.memberInfo;
+  const { name: memberName, id: memberId } = location.state.member;
 
   const [formData, setFormData] = useState({
     name: memberName,

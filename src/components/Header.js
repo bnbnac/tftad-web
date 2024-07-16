@@ -71,7 +71,7 @@ function Header() {
         <Button onClick={onClickHome}>Home</Button>
         {isLoggedIn ? (
           <ButtonsContainer>
-            <Button onClick={onClickSubscribes}>Subscribes</Button>
+            {/* <Button onClick={onClickSubscribes}>Subscribes</Button> */}
             <Button onClick={onClickProfile}>Profile</Button>
             <Button onClick={onClickLogout}>Logout</Button>
             <Button onClick={onClickUpload}>Upload</Button>

@@ -5,7 +5,7 @@ function Root() {
   return (
     <div
       style={{
-        backgroundColor: "aqua",
+        backgroundColor: "mintcream",
         minHeight: "100vh",
         fontFamily: "sans-serif",
       }}
