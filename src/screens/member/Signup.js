@@ -15,7 +15,10 @@ const Signup = () => {
     email: "",
     name: "",
     password: "",
+    code: "",
   });
+
+  const [isVerified, setIsVerified] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,8 +28,64 @@ const Signup = () => {
     });
   };
 
+  const handleSendCode = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_WEB_SERVER}/code/mail`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: formData.email }),
+        }
+      );
+      if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
+        throw new Error("Failed to send authentication code");
+      }
+      console.log("Authentication code sent successfully");
+    } catch (error) {
+      console.error("Error sending authentication code:", error.message);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_WEB_SERVER}/code/mail/verification`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            code: formData.code,
+            email: formData.email,
+          }),
+        }
+      );
+      if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
+        throw new Error("Failed to verify authentication code");
+      }
+      console.log("Authentication code verified successfully");
+      setIsVerified(true);
+    } catch (error) {
+      console.error("Error verifying authentication code:", error.message);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isVerified) {
+      console.error("Email is not verified");
+      return;
+    }
     try {
       const response = await fetch(
         `${process.env.REACT_APP_WEB_SERVER}/auth/signup`,
@@ -64,6 +123,22 @@ const Signup = () => {
             onChange={handleChange}
             required
           />
+          <ButtonFormal type="button" onClick={handleSendCode}>
+            Send Verification Code
+          </ButtonFormal>
+        </FormGroup>
+        <FormGroup>
+          <label>Verification Code:</label>
+          <Input
+            type="text"
+            name="code"
+            value={formData.code}
+            onChange={handleChange}
+            required
+          />
+          <ButtonFormal type="button" onClick={handleVerifyCode}>
+            Verify Code
+          </ButtonFormal>
         </FormGroup>
         <FormGroup>
           <label>Name:</label>
