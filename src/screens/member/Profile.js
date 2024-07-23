@@ -210,7 +210,10 @@ function Profile() {
           memberInfo.channels.map((channel) => (
             <ChannelContainer>
               <Channel key={channel.id} channel={channel} />
-              <Button onClick={() => onClickDeleteChannel(channel.id)}>
+              <Button
+                style={{ width: "100px" }}
+                onClick={() => onClickDeleteChannel(channel.id)}
+              >
                 delete
               </Button>
             </ChannelContainer>

@@ -17,7 +17,9 @@ const PostLink = styled.a`
   text-decoration: none;
   font-weight: bold;
   margin-bottom: 10px;
+  margin-right: 50px;
   display: flex;
+  width: 250px;
   flex-direction: column;
 `;
 

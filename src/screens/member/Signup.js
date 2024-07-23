@@ -123,7 +123,11 @@ const Signup = () => {
             onChange={handleChange}
             required
           />
-          <ButtonFormal type="button" onClick={handleSendCode}>
+          <ButtonFormal
+            style={{ marginTop: "10px" }}
+            type="button"
+            onClick={handleSendCode}
+          >
             Send Verification Code
           </ButtonFormal>
         </FormGroup>
@@ -136,7 +140,11 @@ const Signup = () => {
             onChange={handleChange}
             required
           />
-          <ButtonFormal type="button" onClick={handleVerifyCode}>
+          <ButtonFormal
+            style={{ marginTop: "10px" }}
+            type="button"
+            onClick={handleVerifyCode}
+          >
             Verify Code
           </ButtonFormal>
         </FormGroup>
