@@ -168,7 +168,7 @@ function Profile() {
       fetchMember();
       navigate("/profiles");
     } catch (error) {
-      console.error("Error deleting post:", error);
+      console.error("Error deleting channel:", error);
     }
   };
 

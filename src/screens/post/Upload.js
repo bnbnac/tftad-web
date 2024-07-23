@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   ButtonFormal,
   Container,
+  ErrorMessage,
   Form,
   FormGroup,
   Input,
@@ -19,6 +20,7 @@ function Upload() {
     content: "",
     videoUrl: "",
   });
+  const [error, setError] = useState("");
 
   const { title, content, videoUrl } = formData;
 
@@ -42,20 +44,20 @@ function Upload() {
         }
       );
       if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to submit form");
+        const msg = await response.json();
+        console.log(msg);
+        const validationMessage =
+          msg.validations && msg.validations[0] && msg.validations[0].message
+            ? msg.validations[0].message
+            : "";
+        setError(`${msg.message} ${validationMessage}`);
+        return;
       }
       console.log("Form submitted successfully");
       navigate("/");
     } catch (error) {
-      console.error("Error submitting form:", error.message);
+      console.error("Error submitting form:", error);
     }
-    setFormData({
-      title: "",
-      content: "",
-      videoUrl: "",
-    });
   };
 
   return (
@@ -91,6 +93,7 @@ function Upload() {
             required
           />
         </FormGroup>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <ButtonFormal type="submit">Upload</ButtonFormal>
       </Form>
     </Container>

@@ -45,14 +45,18 @@ const Login = () => {
       if (!response.ok) {
         const msg = await response.json();
         console.log(msg);
-        setError("incorrect login information");
+        const validationMessage =
+          msg.validations && msg.validations[0] && msg.validations[0].message
+            ? msg.validations[0].message
+            : "";
+        setError(`${msg.message} ${validationMessage}`);
         return;
       }
       console.log("Form submitted successfully");
       login();
       navigate("/");
-    } catch (msg) {
-      console.error("Error submitting form:", msg.message);
+    } catch (error) {
+      console.error("login error:", error);
     }
 
     setFormData({

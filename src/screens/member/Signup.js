@@ -45,12 +45,16 @@ const Signup = () => {
       if (!response.ok) {
         const msg = await response.json();
         console.log(msg);
-        setError(msg.validations[0].message);
+        const validationMessage =
+          msg.validations && msg.validations[0] && msg.validations[0].message
+            ? msg.validations[0].message
+            : "";
+        setError(`${msg.message} ${validationMessage}`);
         return;
       }
       console.log("Authentication code sent successfully");
     } catch (error) {
-      console.error("Error sending authentication code:", error.message);
+      console.error("Error sending authentication code:", error);
     }
   };
 
@@ -73,20 +77,24 @@ const Signup = () => {
       if (!response.ok) {
         const msg = await response.json();
         console.log(msg);
-        setError(msg.validations[0].message);
+        const validationMessage =
+          msg.validations && msg.validations[0] && msg.validations[0].message
+            ? msg.validations[0].message
+            : "";
+        setError(`${msg.message} ${validationMessage}`);
         return;
       }
       console.log("Authentication code verified successfully");
       setIsVerified(true);
     } catch (error) {
-      console.error("Error verifying authentication code:", error.message);
+      console.error("Error verifying authentication code:", error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isVerified) {
-      console.error("Email is not verified");
+      setError("이메일을 인증해주세요");
       return;
     }
     try {
@@ -104,13 +112,17 @@ const Signup = () => {
       if (!response.ok) {
         const msg = await response.json();
         console.log(msg);
-        setError(msg.validations[0].message);
+        const validationMessage =
+          msg.validations && msg.validations[0] && msg.validations[0].message
+            ? msg.validations[0].message
+            : "";
+        setError(`${msg.message} ${validationMessage}`);
         return;
       }
       console.log("Form submitted successfully");
       navigate("/");
     } catch (error) {
-      console.error("Error submitting form:", error.message);
+      console.error("Error submitting form:", error);
     }
   };
 
