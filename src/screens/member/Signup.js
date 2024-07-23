@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   ButtonFormal,
   Container,
+  ErrorMessage,
   Form,
   FormGroup,
   Input,
@@ -17,7 +18,7 @@ const Signup = () => {
     password: "",
     code: "",
   });
-
+  const [error, setError] = useState("");
   const [isVerified, setIsVerified] = useState(false);
 
   const handleChange = (e) => {
@@ -42,9 +43,10 @@ const Signup = () => {
         }
       );
       if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to send authentication code");
+        const msg = await response.json();
+        console.log(msg);
+        setError(msg.validations[0].message);
+        return;
       }
       console.log("Authentication code sent successfully");
     } catch (error) {
@@ -69,9 +71,10 @@ const Signup = () => {
         }
       );
       if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to verify authentication code");
+        const msg = await response.json();
+        console.log(msg);
+        setError(msg.validations[0].message);
+        return;
       }
       console.log("Authentication code verified successfully");
       setIsVerified(true);
@@ -99,9 +102,10 @@ const Signup = () => {
         }
       );
       if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to submit form");
+        const msg = await response.json();
+        console.log(msg);
+        setError(msg.validations[0].message);
+        return;
       }
       console.log("Form submitted successfully");
       navigate("/");
@@ -168,6 +172,7 @@ const Signup = () => {
             required
           />
         </FormGroup>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <ButtonFormal type="submit">Signup</ButtonFormal>
       </Form>
     </Container>
