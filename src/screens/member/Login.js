@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   ButtonFormal,
   Container,
+  ErrorMessage,
   Form,
   FormGroup,
   Input,
@@ -17,6 +18,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,15 +43,16 @@ const Login = () => {
         }
       );
       if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to submit form");
+        const msg = await response.json();
+        console.log(msg);
+        setError("incorrect login information");
+        return;
       }
       console.log("Form submitted successfully");
       login();
       navigate("/");
-    } catch (error) {
-      console.error("Error submitting form:", error.message);
+    } catch (msg) {
+      console.error("Error submitting form:", msg.message);
     }
 
     setFormData({
@@ -81,6 +84,7 @@ const Login = () => {
             required
           />
         </FormGroup>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <ButtonFormal type="submit">Login</ButtonFormal>
       </Form>
     </Container>

@@ -108,3 +108,8 @@ export const ButtonFormal = styled.button`
 export const FormGroup = styled.div`
   margin-bottom: 20px;
 `;
+
+export const ErrorMessage = styled.div`
+  color: red;
+  margin-bottom: 10px;
+`;
