@@ -12,6 +12,7 @@ import {
 } from "../../components/Shared";
 import Question from "../../components/Question";
 import styled from "styled-components";
+import Api from "../../tools/Api";
 
 const QuestionsContainer = styled.span`
   display: flex;
@@ -34,29 +35,26 @@ function EditPost() {
   });
   const [questions, setQuestions] = useState(null);
 
+  const fetchData = async () => {
+    try {
+      const response = await Api.get(`/posts/${post.id}/questions`);
+      const questions = response.data;
+      setQuestions(questions);
+
+      const questionEdits = questions.map((question) => ({
+        questionId: question.id,
+        authorIntention: question.authorIntention || "",
+      }));
+      setFormData({ ...formData, questionEdits });
+    } catch (error) {
+      console.error(
+        "Error fetching data:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_WEB_SERVER}/posts/${post.id}/questions`
-        );
-        const questions = await response.json();
-        if (!response.ok) {
-          console.log(questions);
-          throw new Error("Failed to fetch");
-        }
-        setQuestions(questions);
-
-        const questionEdits = questions.map((question) => ({
-          questionId: question.id,
-          authorIntention: question.authorIntention || "",
-        }));
-        setFormData({ ...formData, questionEdits });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, []);
 

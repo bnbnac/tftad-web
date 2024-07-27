@@ -1,8 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
-
-const { logout } = useAuth();
 
 const Api = axios.create({
   baseURL: process.env.REACT_APP_WEB_SERVER,
@@ -11,36 +7,45 @@ const Api = axios.create({
 
 const refreshAccessToken = async () => {
   try {
-    await axios.post("/auth/refresh", {}, { withCredentials: true });
+    const response = await Api.post("/auth/refresh");
+    console.log("Refresh token successful", response.data);
   } catch (error) {
     console.error("Refresh token request failed:", error);
     throw error;
   }
 };
 
-Api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    const navigate = useNavigate();
+export const setupInterceptors = (navigate, logout) => {
+  Api.interceptors.response.use(
+    (response) => {
+      console.log(response);
+      return response;
+    },
+    async (error) => {
+      console.log("Interceptor hit", error);
+      const originalRequest = error.config;
 
-    if (error.response && error.response.status === 401) {
-      if (!originalRequest._retry) {
-        originalRequest._retry = true;
-        try {
-          await refreshAccessToken();
-          return Api(originalRequest);
-        } catch (refreshError) {
-          console.error("Failed to refresh token:", refreshError);
-          navigate("/login");
-          return Promise.reject(refreshError);
+      if (error.response && error.response.status === 401) {
+        console.log("401 error detected");
+        if (!originalRequest._retry) {
+          originalRequest._retry = true;
+          try {
+            await refreshAccessToken();
+            return Api(originalRequest);
+          } catch (refreshError) {
+            console.error("Failed to refresh token:", refreshError);
+            logout();
+            navigate("/login");
+            return Promise.reject(refreshError);
+          }
         }
+        logout();
+        navigate("/login");
       }
-      logout();
-      navigate("/login");
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
-);
+  );
+};
 
+setupInterceptors();
 export default Api;

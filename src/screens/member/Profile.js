@@ -12,6 +12,7 @@ import {
 } from "../../components/Shared";
 import Channel from "../../components/Channel";
 import { timeAgo } from "../../tools/Util";
+import Api from "../../tools/Api";
 
 const MemberContainer = styled.span`
   display: flex;
@@ -82,40 +83,26 @@ function Profile() {
 
   const fetchMember = async () => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/members/me`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        console.log(data);
-        throw new Error("Failed to fetch");
-      }
-      setMemberInfo(data);
+      const response = await Api.get("/members/me");
+      setMemberInfo(response.data);
     } catch (error) {
-      console.error("Error fetching member info:", error);
+      console.error(
+        "Error fetching member info:",
+        error.response?.data || error.message
+      );
+      throw error;
     }
   };
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/posts/my`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        console.log(data);
-      }
-      setPostInfo(data);
+      const response = await Api.get("/posts/my");
+      setPostInfo(response.data);
     } catch (error) {
-      console.error("Error fetching post info:", error);
+      console.error(
+        "Error fetching post info:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -134,41 +121,27 @@ function Profile() {
 
   const onClickDeletePost = async (postId) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/posts/${postId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to delete post");
-      }
+      await Api.delete(`/posts/${postId}`);
       fetchPost();
       navigate("/profiles");
     } catch (error) {
-      console.error("Error deleting post:", error);
+      console.error(
+        "Error delete post:",
+        error.response?.data || error.message
+      );
     }
   };
 
   const onClickDeleteChannel = async (channelId) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/channels/${channelId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to delete post");
-      }
+      await Api.delete(`/channels/${channelId}`);
       fetchMember();
       navigate("/profiles");
     } catch (error) {
-      console.error("Error deleting channel:", error);
+      console.error(
+        "Error delete channel:",
+        error.response?.data || error.message
+      );
     }
   };
 

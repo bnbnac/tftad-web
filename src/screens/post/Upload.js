@@ -11,6 +11,7 @@ import {
   TextArea,
   Title,
 } from "../../components/Shared";
+import Api from "../../tools/Api";
 
 function Upload() {
   const navigate = useNavigate();
@@ -32,31 +33,24 @@ function Upload() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/posts`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      if (!response.ok) {
-        const msg = await response.json();
-        console.log(msg);
-        const validationMessage =
-          msg.validations && msg.validations[0] && msg.validations[0].message
-            ? msg.validations[0].message
-            : "";
-        setError(`${msg.message} ${validationMessage}`);
-        return;
-      }
+      await Api.post("/posts", formData);
       console.log("Form submitted successfully");
       navigate("/");
     } catch (error) {
-      console.error("Error submitting form:", error);
+      const errorResponse = error.response?.data;
+
+      if (errorResponse) {
+        const validationMessage =
+          errorResponse.validations &&
+          errorResponse.validations[0] &&
+          errorResponse.validations[0].message
+            ? errorResponse.validations[0].message
+            : "";
+
+        setError(`${errorResponse.message} ${validationMessage}`);
+      } else {
+        console.error("Error submitting form:", error.message);
+      }
     }
   };
 

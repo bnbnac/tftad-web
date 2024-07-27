@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Title } from "../../components/Shared";
+import Api from "../../tools/Api";
 
 const PostContainer = styled.span`
   display: flex;
@@ -49,42 +50,38 @@ function PostProgress() {
   const [post, setPost] = useState(null);
   const [position, setPosition] = useState(null);
 
+  const fetchPost = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_WEB_SERVER}/posts/simple/${postId}`
+      );
+      const post = await response.json();
+      if (!response.ok) {
+        console.log(post);
+        throw new Error("Failed to fetch");
+      }
+      setPost(post);
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    }
+  };
+
+  const fetchPosition = async () => {
+    try {
+      const response = await Api.get(`/extractor/position/${postId}`);
+      const position = response.data;
+
+      if (position.published) {
+        navigate(`/posts/${postId}`);
+      }
+
+      setPosition(position);
+    } catch (error) {
+      console.error("Error fetching position:", error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_WEB_SERVER}/posts/simple/${postId}`
-        );
-        const post = await response.json();
-        if (!response.ok) {
-          console.log(post);
-          throw new Error("Failed to fetch");
-        }
-        setPost(post);
-      } catch (error) {
-        console.error("Error fetching post:", error);
-      }
-    };
-
-    const fetchPosition = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_WEB_SERVER}/extractor/position/${postId}`
-        );
-        const position = await response.json();
-        if (!response.ok) {
-          console.log(position);
-          throw new Error("Failed to fetch");
-        }
-        if (position.published) {
-          navigate(`/posts/${postId}`);
-        }
-        setPosition(position);
-      } catch (error) {
-        console.error("Error fetching position:", error);
-      }
-    };
-
     fetchPosition();
     fetchPost();
   }, [postId]);

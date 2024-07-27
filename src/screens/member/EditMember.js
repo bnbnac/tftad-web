@@ -9,6 +9,7 @@ import {
   Label,
   Title,
 } from "../../components/Shared";
+import Api from "../../tools/Api";
 
 function EditMember() {
   const navigate = useNavigate();
@@ -30,22 +31,7 @@ function EditMember() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_WEB_SERVER}/members/${memberId}`,
-        {
-          method: "PATCH",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error("Failed to update post");
-      }
+      await Api.patch(`/members/${memberId}`, formData);
       console.log("Member updated successfully");
       navigate("/profiles");
     } catch (error) {

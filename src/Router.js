@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "./Root";
 import Home from "./screens/Home";
 import NotFound from "./screens/NotFound";
-import Subscribes from "./screens/Subscribes";
 import OAuth from "./tools/Oauth";
 import Login from "./screens/member/Login";
 import Profile from "./screens/member/Profile";
@@ -21,11 +20,6 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Home />,
-        errorElement: <NotFound />,
-      },
-      {
-        path: "subscribes",
-        element: <Subscribes />,
         errorElement: <NotFound />,
       },
       {

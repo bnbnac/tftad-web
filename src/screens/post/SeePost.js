@@ -7,7 +7,7 @@ import {
   StyledA,
   Title,
   TitleSmall,
-} from "../../components/shared";
+} from "../../components/Shared";
 import Channel from "../../components/Channel";
 import { timeAgo } from "../../tools/Util";
 import Question from "../../components/Question";

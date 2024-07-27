@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Api from "./Api";
 
 const OAuth = () => {
   const navigate = useNavigate();
@@ -10,22 +11,21 @@ const OAuth = () => {
       const code = urlParams.get("code");
       if (code) {
         try {
-          const response = await fetch(
-            `${process.env.REACT_APP_WEB_SERVER}/channels?code=${code}`,
-            {
-              method: "POST",
-              credentials: "include",
-            }
+          const response = await Api.post(
+            `${process.env.REACT_APP_WEB_SERVER}/channels?code=${code}`
           );
-          if (!response.ok) {
-            const responseBody = await response.json();
+          if (!response.status === 200) {
+            const responseBody = response.data;
             console.log(responseBody);
             navigate("/profiles");
           } else {
             navigate("/profiles");
           }
         } catch (error) {
-          console.error("Error fetching data:", error);
+          console.error(
+            "Error fetching data:",
+            error.response?.data || error.message
+          );
         }
       }
     };
