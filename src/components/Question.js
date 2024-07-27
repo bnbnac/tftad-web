@@ -1,4 +1,4 @@
-import { TitleSmall } from "./shared";
+import { TitleSmall } from "./Shared";
 import styled from "styled-components";
 
 const QuestionContainer = styled.span`

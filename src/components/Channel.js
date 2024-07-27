@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StyledA } from "./shared";
+import { StyledA } from "./Shared";
 
 const Image = styled.img`
   height: 60px;

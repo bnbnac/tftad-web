@@ -10,7 +10,7 @@ import {
   Label,
   TextArea,
   Title,
-} from "../../components/shared";
+} from "../../components/Shared";
 
 function Upload() {
   const navigate = useNavigate();

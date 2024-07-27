@@ -8,7 +8,7 @@ import {
   Input,
   Label,
   Title,
-} from "../../components/shared";
+} from "../../components/Shared";
 
 function EditMember() {
   const navigate = useNavigate();

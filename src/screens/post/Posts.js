@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Container, PostContainer, Title } from "../../components/shared";
+import { Container, PostContainer, Title } from "../../components/Shared";
 import { Outlet } from "react-router-dom";
 import { timeAgo } from "../../tools/Util";
 

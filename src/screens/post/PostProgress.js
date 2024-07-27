@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Title } from "../../components/shared";
+import { Container, Title } from "../../components/Shared";
 
 const PostContainer = styled.span`
   display: flex;

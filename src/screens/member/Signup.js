@@ -8,7 +8,7 @@ import {
   FormGroup,
   Input,
   Title,
-} from "../../components/shared";
+} from "../../components/Shared";
 
 const Signup = () => {
   const navigate = useNavigate();

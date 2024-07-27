@@ -9,7 +9,7 @@ import {
   Input,
   Label,
   Title,
-} from "../../components/shared";
+} from "../../components/Shared";
 import Question from "../../components/Question";
 import styled from "styled-components";
 
