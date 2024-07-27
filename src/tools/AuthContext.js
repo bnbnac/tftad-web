@@ -13,9 +13,14 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem(LOGIN, true);
     setIsLoggedIn(true);
   };
-  const logout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem(LOGIN);
+  const logout = async () => {
+    try {
+      await logoutRequest();
+      setIsLoggedIn(false);
+      localStorage.removeItem(LOGIN);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -23,6 +28,24 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+const logoutRequest = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_WEB_SERVER}/auth/logout`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Logout failed");
+    }
+  } catch (error) {
+    console.error("Logout request failed:", error);
+    throw error;
+  }
 };
 
 export const useAuth = () => useContext(AuthContext);

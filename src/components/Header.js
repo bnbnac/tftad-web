@@ -47,16 +47,12 @@ function Header() {
   };
   const onClickLogout = () => {
     logout();
-    navigate("/");
   };
   const onClickProfile = () => {
     navigate("/profiles");
   };
   const onClickHome = () => {
     navigate("/");
-  };
-  const onClickSubscribes = () => {
-    navigate("/subscribes");
   };
   const onClickSignup = () => {
     navigate("/signup");
@@ -71,7 +67,6 @@ function Header() {
         <Button onClick={onClickHome}>Home</Button>
         {isLoggedIn ? (
           <ButtonsContainer>
-            {/* <Button onClick={onClickSubscribes}>Subscribes</Button> */}
             <Button onClick={onClickProfile}>Profile</Button>
             <Button onClick={onClickLogout}>Logout</Button>
             <Button onClick={onClickUpload}>Upload</Button>
