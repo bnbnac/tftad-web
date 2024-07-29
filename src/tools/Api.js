@@ -31,8 +31,8 @@ export const setupInterceptors = (navigate, logout) => {
               await refreshAccessToken();
               return Api(originalRequest);
             } catch (refreshError) {
-              console.error("Failed to refresh token:", refreshError);
-              return Promise.reject(refreshError);
+              logout();
+              navigate("/login");
             }
           }
         } else {
