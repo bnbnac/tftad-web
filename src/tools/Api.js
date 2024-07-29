@@ -17,10 +17,7 @@ const refreshAccessToken = async () => {
 
 export const setupInterceptors = (navigate, logout) => {
   Api.interceptors.response.use(
-    (response) => {
-      console.log(response);
-      return response;
-    },
+    (response) => response,
     async (error) => {
       console.log("Interceptor hit", error);
       const originalRequest = error.config;
