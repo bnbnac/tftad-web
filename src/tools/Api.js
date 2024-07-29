@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../tools/AuthContext";
+import History from "./History";
 
 const Api = axios.create({
   baseURL: process.env.REACT_APP_WEB_SERVER,
@@ -34,16 +33,16 @@ export const setupInterceptors = (navigate, logout) => {
               return Api(originalRequest);
             } catch (refreshError) {
               console.log("ref err");
-              history.push("/login");
+              History.push("/login");
             }
           }
         } else {
           console.log("else");
-          history.push("/login");
+          History.push("/login");
         }
       }
       console.log("fin");
-      history.push("/login");
+      History.push("/login");
       return Promise.reject(error);
     }
   );
