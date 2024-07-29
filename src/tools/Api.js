@@ -12,7 +12,7 @@ const refreshAccessToken = async () => {
     console.log("Refresh token successful", response.data);
   } catch (error) {
     console.error("Refresh token request failed:", error);
-    throw error;
+    History.push("/login");
   }
 };
 
