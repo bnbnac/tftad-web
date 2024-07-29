@@ -13,7 +13,7 @@ const refreshAccessToken = async () => {
   } catch (error) {
     console.error("Refresh token request failed:", error);
     History.push("/login");
-    location.reload();
+    window.location.reload();
   }
 };
 
@@ -35,18 +35,18 @@ export const setupInterceptors = (History) => {
             } catch (refreshError) {
               console.log("ref err");
               History.push("/login");
-              location.reload();
+              window.location.reload();
             }
           }
         } else {
           console.log("else");
           History.push("/login");
-          location.reload();
+          window.location.reload();
         }
       }
       console.log("fin");
       History.push("/login");
-      location.reload();
+      window.location.reload();
     }
   );
 };
