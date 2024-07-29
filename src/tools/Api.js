@@ -9,7 +9,7 @@ const Api = axios.create({
 const refreshAccessToken = async () => {
   try {
     const response = await Api.post("/auth/refresh");
-    console.log("Refresh token successful", response.data);
+    console.log("Refresh token successful", response);
   } catch (error) {
     console.error("Refresh token request failed:", error);
     History.push("/login");
