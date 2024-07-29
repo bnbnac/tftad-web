@@ -6,7 +6,7 @@ const Api = axios.create({
   withCredentials: true,
 });
 
-const refreshAccessToken = async () => {
+const refreshAccessToken = async (History) => {
   try {
     const response = await Api.post("/auth/refresh");
     console.log("Refresh token successful", response);
@@ -17,7 +17,7 @@ const refreshAccessToken = async () => {
   }
 };
 
-export const setupInterceptors = () => {
+export const setupInterceptors = (History) => {
   Api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -29,7 +29,7 @@ export const setupInterceptors = () => {
           console.log("401 error from /auth/refresh");
           if (!originalRequest._retry) {
             originalRequest._retry = true;
-            await refreshAccessToken();
+            await refreshAccessToken(History);
             return Api(originalRequest);
           }
         }
@@ -38,5 +38,4 @@ export const setupInterceptors = () => {
   );
 };
 
-setupInterceptors();
 export default Api;

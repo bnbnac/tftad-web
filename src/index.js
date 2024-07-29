@@ -4,9 +4,10 @@ import { RouterProvider } from "react-router-dom";
 import router from "./Router";
 import { AuthProvider } from "./tools/AuthContext";
 import { setupInterceptors } from "./tools/Api";
+import History from "./tools/History";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-setupInterceptors();
+setupInterceptors(History);
 
 root.render(
   <React.StrictMode>
