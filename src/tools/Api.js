@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../tools/AuthContext";
 
 const Api = axios.create({
   baseURL: process.env.REACT_APP_WEB_SERVER,
@@ -50,5 +52,7 @@ export const setupInterceptors = (navigate, logout) => {
   );
 };
 
-setupInterceptors();
+const { logout } = useAuth();
+const navigate = useNavigate();
+setupInterceptors(navigate, logout);
 export default Api;
