@@ -31,15 +31,18 @@ export const setupInterceptors = (navigate, logout) => {
               await refreshAccessToken();
               return Api(originalRequest);
             } catch (refreshError) {
+              console.log("ref err");
               logout();
               navigate("/login");
             }
           }
         } else {
+          console.log("else");
           logout();
           navigate("/login");
         }
       }
+      console.log("fin");
       logout();
       navigate("/login");
       return Promise.reject(error);
