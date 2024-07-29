@@ -40,8 +40,8 @@ export const setupInterceptors = (History) => {
           }
         } else {
           console.log("else");
-          History.push("/login");
-          window.location.reload();
+          //   History.push("/login");
+          //   window.location.reload();
         }
       }
       console.log("fin");
