@@ -29,10 +29,20 @@ export const setupInterceptors = (History) => {
           console.log("401 error from /auth/refresh");
           if (!originalRequest._retry) {
             originalRequest._retry = true;
-            await refreshAccessToken(History);
-            return Api(originalRequest);
+            try {
+              await refreshAccessToken(History);
+              return Api(originalRequest);
+            } catch (error) {
+              History.push("/login");
+              window.location.reload();
+            }
           }
+        } else {
+          History.push("/login");
+          window.location.reload();
         }
+      } else {
+        throw error;
       }
     }
   );
