@@ -34,8 +34,8 @@ export const setupInterceptors = (History) => {
               return Api(originalRequest);
             } catch (refreshError) {
               console.log("ref err");
-              History.push("/login");
-              window.location.reload();
+              //   History.push("/login");
+              //   window.location.reload();
             }
           }
         } else {
@@ -45,8 +45,8 @@ export const setupInterceptors = (History) => {
         }
       }
       console.log("fin");
-      History.push("/login");
-      window.location.reload();
+      //   History.push("/login");
+      //   window.location.reload();
     }
   );
 };
