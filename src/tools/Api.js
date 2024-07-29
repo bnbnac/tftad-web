@@ -26,27 +26,14 @@ export const setupInterceptors = (History) => {
 
       if (error.response && error.response.status === 401) {
         if (!originalRequest.url.includes("/auth/refresh")) {
-          console.log("401 error detected");
+          console.log("401 error from /auth/refresh");
           if (!originalRequest._retry) {
             originalRequest._retry = true;
-            try {
-              await refreshAccessToken();
-              return Api(originalRequest);
-            } catch (refreshError) {
-              console.log("ref err");
-              //   History.push("/login");
-              //   window.location.reload();
-            }
+            await refreshAccessToken();
+            return Api(originalRequest);
           }
-        } else {
-          console.log("else");
-          //   History.push("/login");
-          //   window.location.reload();
         }
       }
-      console.log("fin");
-      //   History.push("/login");
-      //   window.location.reload();
     }
   );
 };
