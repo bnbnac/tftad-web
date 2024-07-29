@@ -1,4 +1,5 @@
 import axios from "axios";
+import History from "./History";
 
 const Api = axios.create({
   baseURL: process.env.REACT_APP_WEB_SERVER,
@@ -8,14 +9,15 @@ const Api = axios.create({
 const refreshAccessToken = async () => {
   try {
     const response = await Api.post("/auth/refresh");
-    console.log("Refresh token successful", response.data);
+    console.log("Refresh token successful", response);
   } catch (error) {
     console.error("Refresh token request failed:", error);
-    throw error;
+    History.push("/login");
+    window.location.reload();
   }
 };
 
-export const setupInterceptors = (navigate, logout) => {
+export const setupInterceptors = (History) => {
   Api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -23,23 +25,15 @@ export const setupInterceptors = (navigate, logout) => {
       const originalRequest = error.config;
 
       if (error.response && error.response.status === 401) {
-        console.log("401 error detected");
-        if (!originalRequest._retry) {
-          originalRequest._retry = true;
-          try {
+        if (!originalRequest.url.includes("/auth/refresh")) {
+          console.log("401 error from /auth/refresh");
+          if (!originalRequest._retry) {
+            originalRequest._retry = true;
             await refreshAccessToken();
             return Api(originalRequest);
-          } catch (refreshError) {
-            console.error("Failed to refresh token:", refreshError);
-            logout();
-            navigate("/login");
-            return Promise.reject(refreshError);
           }
         }
-        logout();
-        navigate("/login");
       }
-      return Promise.reject(error);
     }
   );
 };
