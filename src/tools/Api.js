@@ -34,10 +34,10 @@ export const setupInterceptors = (navigate, logout) => {
               console.error("Failed to refresh token:", refreshError);
               return Promise.reject(refreshError);
             }
-          } else {
-            logout();
-            navigate("/login");
           }
+        } else {
+          logout();
+          navigate("/login");
         }
       }
       return Promise.reject(error);
