@@ -16,7 +16,7 @@ const refreshAccessToken = async () => {
   }
 };
 
-export const setupInterceptors = (navigate, logout) => {
+const setupInterceptors = () => {
   Api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -43,7 +43,6 @@ export const setupInterceptors = (navigate, logout) => {
       }
       console.log("fin");
       History.push("/login");
-      return Promise.reject(error);
     }
   );
 };
