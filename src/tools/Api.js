@@ -40,6 +40,8 @@ export const setupInterceptors = (navigate, logout) => {
           navigate("/login");
         }
       }
+      logout();
+      navigate("/login");
       return Promise.reject(error);
     }
   );
