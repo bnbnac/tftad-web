@@ -1,5 +1,4 @@
 import axios from "axios";
-import History from "./History";
 
 const Api = axios.create({
   baseURL: process.env.REACT_APP_WEB_SERVER,
@@ -16,7 +15,7 @@ const refreshAccessToken = async () => {
   }
 };
 
-const setupInterceptors = () => {
+const setupInterceptors = (History) => {
   Api.interceptors.response.use(
     (response) => response,
     async (error) => {
