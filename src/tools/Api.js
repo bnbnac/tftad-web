@@ -17,7 +17,7 @@ const refreshAccessToken = async () => {
   }
 };
 
-export const setupInterceptors = (History) => {
+export const setupInterceptors = () => {
   Api.interceptors.response.use(
     (response) => response,
     async (error) => {

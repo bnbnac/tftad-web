@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
       await logoutRequest();
       setIsLoggedIn(false);
       localStorage.removeItem(LOGIN);
+      window.location.reload();
     } catch (error) {
       console.error("Logout failed:", error);
     }
