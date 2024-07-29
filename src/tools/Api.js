@@ -22,26 +22,23 @@ export const setupInterceptors = (navigate, logout) => {
       console.log("Interceptor hit", error);
       const originalRequest = error.config;
 
-      if (
-        error.response &&
-        error.response.status === 401 &&
-        !originalRequest.url.includes("/auth/refresh")
-      ) {
-        console.log("401 error detected");
-        if (!originalRequest._retry) {
-          originalRequest._retry = true;
-          try {
-            await refreshAccessToken();
-            return Api(originalRequest);
-          } catch (refreshError) {
-            console.error("Failed to refresh token:", refreshError);
+      if (error.response && error.response.status === 401) {
+        if (!originalRequest.url.includes("/auth/refresh")) {
+          console.log("401 error detected");
+          if (!originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+              await refreshAccessToken();
+              return Api(originalRequest);
+            } catch (refreshError) {
+              console.error("Failed to refresh token:", refreshError);
+              return Promise.reject(refreshError);
+            }
+          } else {
             logout();
             navigate("/login");
-            return Promise.reject(refreshError);
           }
         }
-        logout();
-        navigate("/login");
       }
       return Promise.reject(error);
     }
