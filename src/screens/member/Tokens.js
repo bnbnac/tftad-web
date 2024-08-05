@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Api from "../../tools/Api";
 
 const Tokens = () => {
   const [tokens, setTokens] = useState([]);
@@ -8,7 +9,7 @@ const Tokens = () => {
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await axios.get("/auth/tokens");
+        const response = await Api.get("/auth/tokens");
         setTokens(response.data);
       } catch (error) {
         setError(error);
