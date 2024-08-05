@@ -177,6 +177,12 @@ function Profile() {
           </StyledA>
         </MemberInfoContainer>
       </ProfileContainer>
+      <Button
+        style={{ width: "200px", marginBottom: "20px" }}
+        onClick={() => navigate("/member/tokens")}
+      >
+        View Active Sessions
+      </Button>
       <TitleSmall>Channels</TitleSmall>
       <ChannelsContainer>
         {memberInfo.channels &&
