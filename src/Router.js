@@ -11,6 +11,7 @@ import SeePost from "./screens/post/SeePost";
 import PostProgress from "./screens/post/PostProgress";
 import EditPost from "./screens/post/EditPost";
 import EditMember from "./screens/member/EditMember";
+import Tokens from "./screens/member/Tokens";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,11 @@ const router = createBrowserRouter([
       {
         path: "members/edit",
         element: <EditMember />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "member/tokens",
+        element: <Tokens />,
         errorElement: <NotFound />,
       },
     ],
