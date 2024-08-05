@@ -1,6 +1,46 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Api from "../../tools/Api";
+import styled from "styled-components";
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+`;
+
+const Th = styled.th`
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  background-color: #f2f2f2;
+  font-weight: bold;
+`;
+
+const Td = styled.td`
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+`;
+
+const Tr = styled.tr`
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+const LogoutButton = styled.button`
+  padding: 6px 12px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+`;
 
 const Tokens = () => {
   const [tokens, setTokens] = useState([]);
@@ -19,6 +59,15 @@ const Tokens = () => {
     fetchTokens();
   }, []);
 
+  const handleLogout = async (tokenId) => {
+    try {
+      await Api.delete(`/auth/logout/${tokenId}`);
+      setTokens(tokens.filter((token) => token.id !== tokenId));
+    } catch (error) {
+      setError(error);
+    }
+  };
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -26,26 +75,30 @@ const Tokens = () => {
   return (
     <div>
       <h1>Active Sessions</h1>
-      <table>
+      <Table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Created At</th>
-            <th>Client IP</th>
-            <th>User Agent</th>
+            <Th>Created At</Th>
+            <Th>Client IP</Th>
+            <Th>User Agent</Th>
+            <Th>Action</Th>
           </tr>
         </thead>
         <tbody>
           {tokens.map((token) => (
-            <tr key={token.id}>
-              <td>{token.id}</td>
-              <td>{new Date(token.createdAt).toLocaleString()}</td>
-              <td>{token.clientIp}</td>
-              <td>{token.userAgent}</td>
-            </tr>
+            <Tr key={token.id}>
+              <Td>{new Date(token.createdAt).toLocaleString()}</Td>
+              <Td>{token.clientIp}</Td>
+              <Td>{token.userAgent}</Td>
+              <Td>
+                <LogoutButton onClick={() => handleLogout(token.id)}>
+                  Logout
+                </LogoutButton>
+              </Td>
+            </Tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 };
