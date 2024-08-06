@@ -152,6 +152,12 @@ function Profile() {
   return (
     <Container>
       <Title>Profile</Title>
+      <Button
+        style={{ width: "200px", marginBottom: "20px" }}
+        onClick={() => navigate("/member/tokens")}
+      >
+        login device management
+      </Button>
       <ProfileContainer>
         {memberInfo && (
           <MemberInfoContainer>
@@ -177,12 +183,6 @@ function Profile() {
           </StyledA>
         </MemberInfoContainer>
       </ProfileContainer>
-      <Button
-        style={{ width: "200px", marginBottom: "20px" }}
-        onClick={() => navigate("/member/tokens")}
-      >
-        View Active Sessions
-      </Button>
       <TitleSmall>Channels</TitleSmall>
       <ChannelsContainer>
         {memberInfo.channels &&
