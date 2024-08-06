@@ -87,8 +87,7 @@ const Tokens = () => {
         <tbody>
           {tokens.map((token) => (
             <Tr key={token.id}>
-              {/* <Td>{new Date(token.createdAt).toLocaleString()}</Td> */}
-              <Td>{token.createdAt}</Td>
+              <Td>{new Date(token.createdAt).toLocaleString()}</Td>
               <Td>{token.clientIp}</Td>
               <Td>{token.userAgent}</Td>
               <Td>
